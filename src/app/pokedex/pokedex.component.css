@@ -1,0 +1,28 @@
+.pokedex {
+    background-color: #FF0000;
+    padding: 20px;
+    height: 100%;
+}
+
+.pokedex-title {
+    color: white;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+
+.list-container {
+    height: 80vh;
+    overflow-y: auto;
+    padding-right: 0;
+} 
+
+.list-entry {
+    background: #fff url(../../assets/pokeball-background.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: center;
+}
+.list-entry:hover {
+    background-color: lightgray;
+    cursor: pointer;
+}

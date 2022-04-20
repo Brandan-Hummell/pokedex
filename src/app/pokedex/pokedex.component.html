@@ -1,0 +1,23 @@
+<div class="pokedex container-fluid vh-100">
+    <div class="row content-row">
+        <div class="pokedex-title">
+            <h1>Pokedex</h1>
+        </div>
+        <div *ngIf="pokemonList.length > 0" class="col-sm-3 list-container">
+            <div class="card list-entry mb-3" *ngFor="let p of pokemonList" (click)="selectPokemon(p)">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <h3 class="card-title">#{{ p.id }} </h3>
+                            <h3 class="card-title">{{ p.name | titlecase }}</h3>
+                        </div>
+                        <div class="col-sm-4">
+                            <img class="img-fluid" [attr.src]="p.spriteUrl">
+                        </div>               
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-pokemon-details *ngIf="pokemonList.length > 0" [pokemon]="selectedPokemon" class="col-sm-8 list-container"></app-pokemon-details>
+    </div>
+</div>
