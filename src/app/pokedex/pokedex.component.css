@@ -1,13 +1,15 @@
 .pokedex {
-    background-color: #FF0000;
+    background-color: #CC0000 ;
     padding: 20px;
-    height: 100%;
+    overflow-y: auto;
 }
 
-.pokedex-title {
+.pokedex-title h1 {
     color: white;
     font-weight: 900;
-    margin-bottom: 10px;
+    font-size: 45px;
+    text-align: right;
+    margin-bottom: 20px;
 }
 
 .list-container {
@@ -25,4 +27,18 @@
 .list-entry:hover {
     background-color: lightgray;
     cursor: pointer;
+}
+
+.search-bar-container .btn-primary {
+    background-color: #30a7d7;
+    border-color: #30a7d7;
+}
+
+.info-display {
+    background: #fff url(../../assets/details_bg.png);
+}
+
+.info-img {
+    height: 50px;
+    width: fit-content;
 }

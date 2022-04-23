@@ -1,23 +1,77 @@
 <div class="pokedex container-fluid vh-100">
     <div class="row content-row">
-        <div class="pokedex-title">
-            <h1>Pokedex</h1>
-        </div>
-        <div *ngIf="pokemonList.length > 0" class="col-sm-3 list-container">
-            <div class="card list-entry mb-3" *ngFor="let p of pokemonList" (click)="selectPokemon(p)">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <h3 class="card-title">#{{ p.id }} </h3>
-                            <h3 class="card-title">{{ p.name | titlecase }}</h3>
-                        </div>
-                        <div class="col-sm-4">
-                            <img class="img-fluid" [attr.src]="p.spriteUrl">
-                        </div>               
+        <div class="row">
+            <div class="col-sm-2 mt-auto mb-3 ">
+                <select class="form-select" [(ngModel)]="activeListType" (ngModelChange)="changeList($event)">
+                    <option [value]="'all'">All Pokemon</option>
+                    <option [value]="'liked'">Liked Pokemon</option>
+                    <option [value]="'captured'">Captured Pokemon</option>
+                </select>
+            </div>
+            <div class="col-sm-2 mt-auto mb-3 search-bar-container">
+                <div class="input-group">
+                    <input class="form-control" type="text" [(ngModel)]="searchText" placeholder="Search" (keyup.enter)="search()" mdbInput>
+                    <div class="input-group-append">
+                        <button class="input-group-text btn btn-primary" (click)="search()"><fa-icon [icon]="faSearch"></fa-icon></button>
                     </div>
                 </div>
             </div>
+            <div class="pokedex-title col-sm-3 offset-sm-4">    
+                <h1>Pokedex</h1>
+            </div>
         </div>
-        <app-pokemon-details *ngIf="pokemonList.length > 0" [pokemon]="selectedPokemon" class="col-sm-8 list-container"></app-pokemon-details>
+        <div class="row" *ngIf="activeList && activeList.length > 0">
+            <div class="col-sm-3 list-container" 
+                infiniteScroll (scrolled)="loadMore()" [scrollWindow]="false" [infiniteScrollDisabled]="activeListType !== 'all' || isSearching">
+                <div class="card list-entry mb-3" *ngFor="let p of activeList" (click)="selectPokemon(p)">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <h3 class="card-title">#{{ p.id }} </h3>
+                                <h3 class="card-title">{{ p.name | titlecase }}</h3>
+                            </div>
+                            <div class="col-sm-4">
+                                <img class="img-fluid" [attr.src]="p.spriteUrl" (error)="onImageError($event)">
+                            </div>               
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <app-pokemon-details class="col-sm-8 list-container" [pokemon]="selectedPokemon"
+                (likedOrCaptured)="likedOrCaptured($event)">
+            </app-pokemon-details>
+        </div>
+    </div>
+    <!-- No search Results-->
+    <div class="row mb-3" *ngIf="isSearching && activeList.length === 0">
+        <div class="card col-sm-11 info-display">
+            <div class="card-body">
+                <h1>No results found. Try another search.</h1>
+            </div>
+        </div>
+    </div>
+    <!-- No liked/captured pokemon-->
+    <div class="row mb-3" *ngIf="activeListType !== 'all' && activeList.length === 0 && !isSearching">
+        <div class="card col-sm-11 info-display">
+            <div class="card-body">
+                <h2>No pokemon in this list.</h2>
+                <br>
+                <p>
+                    Click on the <img class="info-img" src="../../assets/star_unfilled.png"> on the pokemon details page to like a pokemon.
+                </p>
+                <br>
+                <p>
+                    Click on the <img class="info-img" src="../../assets/pokeball_unfilled.png"> on the pokemon details page to indicate that you have captured that pokemon.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- Display user friendly error messages -->
+    <div class="row mb-3" *ngIf="errorMessage && errorMessage.length > 0">
+        <div class="card col-sm-11 info-display">
+            <div class="card-body">
+                <h1>{{errorMessage}}</h1>
+            </div>
+        </div>
     </div>
 </div>

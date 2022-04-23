@@ -5,9 +5,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface Pokemon {
-  name: string;
+  name: string,
   spriteUrl: string,
-  id: number;
+  id: number,
+  liked: boolean,
+  captured: boolean,
 }
 
 export interface SearchResults {
@@ -45,26 +47,33 @@ export class PokedexService {
 
   constructor(private http: HttpClient) { }
 
-  getPokemonList(offset: number, limit: number): Observable<Pokemon[]> {
-    // get the pokemon list using the offset and limit
-    return this.http.get<any>(`${this.baseUrl}pokemon/?offset=${offset}&limit=${limit}`).pipe(map(res => {
+  getPokemonList(): Observable<Pokemon[]> {
+    // get the entire pokemon list
+    return this.http.get<any>(`${this.baseUrl}pokemon/?offset=0&limit=1500`).pipe(map(res => {
       // take the results and map them to a new array of Pokemon
       return res.results.map((val: { name: string; }, index: number) => {
-        const id = index + 1 + offset;
+        const id = index + 1;
         return {
           name: val.name,
           id,
-          spriteUrl: `${this.baseSpriteUrl}${id}.png`
+          spriteUrl: `${this.baseSpriteUrl}${id}.png`,
+          liked: false,
+          captured: false,
         }
       });
     }));
   }
 
   getPokemon(id: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}pokemon/${id}/`)
+    return this.http.get<any>(`${this.baseUrl}pokemon/${id}/`);
   }
 
   getSpecies(id: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}pokemon-species/${id}/`)
+    return this.http.get<any>(`${this.baseUrl}pokemon-species/${id}/`);
+  }
+
+  onImageError(event: any) {
+    console.error(`Could not find image for ${event.target.src}. Using default image instead.`)
+    event.target.src = '../../assets/unknown_pokemon.png';
   }
 }

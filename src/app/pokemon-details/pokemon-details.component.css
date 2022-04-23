@@ -8,6 +8,36 @@
     background: #fff url(../../assets/details_bg.png);
 }
 
+.detail-title {
+    display: inline-block;
+    width: fit-content ;
+}
+
+.image-toggle {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    background-size: cover;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.unfilled-pokeball {
+    background-image: url(../../assets/pokeball_unfilled.png);
+}
+
+.filled-pokeball {
+    background-image: url(../../assets/pokeball_filled.png);
+}
+
+.unfilled-star {
+    background-image: url(../../assets/star_unfilled.png);
+}
+
+.filled-star {
+    background-image: url(../../assets/star_filled.png);
+}
+
 .list-group {
     background-color: #30a7d7;
     border-radius: 15px;

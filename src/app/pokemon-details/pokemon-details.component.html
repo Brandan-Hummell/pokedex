@@ -1,44 +1,59 @@
 <div class="card details-container">
-    <div class="row">
-        <div class="col-sm-9">
-            <div class="mt-2">
-                <h1>{{pokemon.name | titlecase}}</h1>
-                <span *ngFor="let type of pokemonDetails.types" class="badge border rounded-pill me-1 bg-{{type.type.name}}">
-                    {{type.type.name | titlecase}}
-                </span>
+    <div *ngIf="pokemonDetails && pokemonSpecies && !errorMessage">
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="mt-2">
+                    <div class="row">    
+                        <h1 class="detail-title">{{pokemon.name | titlecase}}</h1>
+                        <span class="image-toggle" [ngClass]="pokemon.liked ? 'filled-star' : 'unfilled-star'"
+                            (click)="toggleCapturedOrLiked(false)" title="Favorite this pokemon!">
+                        </span>
+                        <span class="image-toggle" [ngClass]="pokemon.captured ? 'filled-pokeball' : 'unfilled-pokeball'"
+                            (click)="toggleCapturedOrLiked()" title="Have you captured this pokemon?">
+                        </span>
+                    </div>
+                    <span *ngFor="let type of pokemonDetails.types" class="badge border rounded-pill me-1 bg-{{type.type.name}}">
+                        {{type.type.name | titlecase}}
+                    </span>
+                </div>
+                <p class="mt-2">{{flavorText}}</p>
+                <div class="row mt-3">
+                    <h3>Base Stats</h3>
+                    <ul class="list-group list-group-flush col-sm-5 m-2 p-1">
+                        <li class="list-group-item bg-transparent">Species<b
+                            class="float-end">{{genus}}</b></li>
+                        <li class="list-group-item bg-transparent">Color <b
+                            class="float-end">{{pokemonSpecies.color.name | titlecase}}</b></li>
+                        <li class="list-group-item bg-transparent">Shape <b
+                            class="float-end">{{pokemonSpecies.shape.name | titlecase}}</b></li>
+                        <li class="list-group-item bg-transparent">Base Experience <b
+                            class="float-end">{{pokemonDetails.base_experience}}</b></li>
+                        <li class="list-group-item bg-transparent">Height <b
+                            class="float-end">{{pokemonDetails.height}}</b></li>
+                        <li class="list-group-item bg-transparent">Weight <b
+                            class="float-end">{{pokemonDetails.weight}}</b></li>
+                    </ul>
+                    <ul class="list-group list-group-flush col-sm-5 m-2 p-1">
+                        <li *ngFor="let stat of pokemonDetails.stats" class="list-group-item bg-transparent">{{stat.stat.name | titlecase}} <b
+                            class="float-end">{{stat.base_stat}}</b></li>
+                    </ul>
+                </div>
             </div>
-            <p class="mt-2">{{flavorText}}</p>
-            <div class="row mt-3">
-                <h3>Base Stats</h3>
-                <ul class="list-group list-group-flush col-sm-5 m-2 p-1">
-                    <li class="list-group-item bg-transparent">Species<b
-                        class="float-end">{{genus}}</b></li>
-                    <li class="list-group-item bg-transparent">Color <b
-                        class="float-end">{{pokemonSpecies.color.name | titlecase}}</b></li>
-                    <li class="list-group-item bg-transparent">Shape <b
-                        class="float-end">{{pokemonSpecies.shape.name | titlecase}}</b></li>
-                    <li class="list-group-item bg-transparent">Base Experience <b
-                        class="float-end">{{pokemonDetails.base_experience}}</b></li>
-                    <li class="list-group-item bg-transparent">Height <b
-                        class="float-end">{{pokemonDetails.height}}</b></li>
-                    <li class="list-group-item bg-transparent">Weight <b
-                        class="float-end">{{pokemonDetails.weight}}</b></li>
-                </ul>
-                <ul class="list-group list-group-flush col-sm-5 m-2 p-1">
-                    <li *ngFor="let stat of pokemonDetails.stats" class="list-group-item bg-transparent">{{stat.stat.name | titlecase}} <b
-                        class="float-end">{{stat.base_stat}}</b></li>
-                </ul>
+            <div class="col-sm-3">
+                <img [attr.src]="pokemon.spriteUrl" class="details-sprite" (error)="onImageError($event)">
             </div>
         </div>
-        <div class="col-sm-3">
-            <img [attr.src]="pokemon.spriteUrl" class="details-sprite">
+        <div class="row mt-3">
+            <h3>Moves Learned By Leveling</h3>
+            <ul class="list-group list-group-flush col-sm-6 m-2 p-1">
+                <li *ngFor="let move of moves" class="list-group-item bg-transparent">{{move.move.name | titlecase}} <b
+                    class="float-end">{{move.version_group_details[0].level_learned_at}}</b></li>
+            </ul>
         </div>
     </div>
-    <div class="row mt-3">
-        <h3>Moves Learned By Leveling</h3>
-        <ul class="list-group list-group-flush col-sm-6 m-2 p-1">
-            <li *ngFor="let move of moves" class="list-group-item bg-transparent">{{move.move.name | titlecase}} <b
-                class="float-end">{{move.version_group_details[0].level_learned_at}}</b></li>
-        </ul>
+    <div *ngIf="errorMessage" class="card-body">
+        <h3>
+            {{errorMessage}}
+        </h3>
     </div>
 </div>
