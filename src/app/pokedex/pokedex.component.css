@@ -22,7 +22,7 @@
     background: #fff url(../../assets/pokeball-background.png);
     background-size: contain;
     background-repeat: no-repeat;
-    background-position-x: center;
+    background-position: center;
 }
 .list-entry:hover {
     background-color: lightgray;
